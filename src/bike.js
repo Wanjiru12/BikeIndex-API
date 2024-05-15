@@ -2,7 +2,7 @@
 export default class StolenBike {
     static getStolenBike(location) {
         const oneWeekAgo = Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60;
-        const url = `https://bikeindex.org/api/v3/search?page=1&per_page=100&location=${location}&distance=10&stolenness=proximity&stolen_after=${oneWeekAgo}`;
+        const url = `https://bikeindex.org:443/api/v3/search?page=1&per_page=25&{location}&distance=10&stolenness=proximity&stolen_after=${oneWeekAgo}`;
         return fetch(url)
             .then((response) => {
                 if (!response.ok) {
