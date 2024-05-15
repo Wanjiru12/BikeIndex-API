@@ -1,10 +1,9 @@
-import "./css/styles.css";
 import StolenBike from "./bike.js";
 
 // Business Logic
 function getStolenBike(location) {
     StolenBike.getStolenBike(location)
-        .then(function(response) {
+        .then((response) => {
             console.log(response); // Log the response for debugging
             if (response && response.bikes && response.bikes.length > 0) {
                 printElements(response, location);
@@ -12,7 +11,7 @@ function getStolenBike(location) {
                 printError("No bikes found", location);
             }
         })
-        .catch(function(error) {
+        .catch((error) => {
             console.error("Error fetching data:", error); // Log the error for debugging
             printError(error.message, location);
         });
@@ -22,7 +21,6 @@ function convertDate(timestamp) {
     const date = new Date(timestamp * 1000);
     const options = { year: "numeric", month: "short", day: "numeric" };
     const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
-
     return formattedDate;
 }
 
@@ -36,16 +34,18 @@ function printElements(response, location) {
         const listItem = document.createElement("li");
         listItem.textContent = `Date Stolen: ${newDate}, Bike ID: ${bike.id}, Manufacturer: ${bike.manufacturer_name}, Model: ${bike.frame_model}`;
         resultContainer.appendChild(listItem);
-        let imgTag = document.createElement("img");
-        imgTag.setAttribute("src", bike.thumb);
-        listItem.appendChild(imgTag);
+        if (bike.thumb) {
+            let imgTag = document.createElement("img");
+            imgTag.setAttribute("src", bike.thumb);
+            listItem.appendChild(imgTag);
+        }
     }
 }
 
 function printError(error, location) {
     document.querySelector(
         "#results"
-    ).innerText = `There was an error accessing bike data in your ${location}: ${error}`;
+    ).innerText = `There was an error accessing bike data in your location (${location}): ${error}`;
 }
 
 function handleFormSubmission(event) {
